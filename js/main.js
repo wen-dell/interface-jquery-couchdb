@@ -14,7 +14,7 @@ function buscarDados(array) {
             url: "http://localhost:5984/meu_bd/" + array[i].id,
             type: "get",
             success: function (result) {
-                $("#listagem").append("<tr></tr>");
+                $("#listagem").append("<tr class='text-center'></tr>");
                 $("#listagem tr:last-child").append("<td>" + result.nome + "</td>");
                 $("#listagem tr:last-child").append("<td>" + result.profissao + "</td>");
                 $("#listagem tr:last-child").append("<td>" + result.estado + "</td>");
