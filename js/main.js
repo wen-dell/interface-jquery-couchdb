@@ -1,9 +1,31 @@
+buscarIds();
+
+var id = 1;
+
+function atribuirId(result) {
+    id = result.rows[result.rows.length - 1].id;
+    id++;
+}
+
+function buscarPorId(id) {
+    $.ajax({
+        url: "http://localhost:5984/meu_bd/" + id,
+        type: "get",
+        success: function(result) {
+            adicionarNaTabela(result);
+        }
+    });
+}
+
 function buscarIds() {
     $.ajax({
         url: "http://localhost:5984/meu_bd/_all_docs",
         type: "get",
         success: function(result) {
-            buscarDados(result.rows);
+            if (result.rows.length != 0) {
+                atribuirId(result);
+                buscarDados(result.rows);
+            }
         }
     });
 }
@@ -14,13 +36,17 @@ function buscarDados(array) {
             url: "http://localhost:5984/meu_bd/" + array[i].id,
             type: "get",
             success: function (result) {
-                $("#listagem").append("<tr class='text-center'></tr>");
-                $("#listagem tr:last-child").append("<td>" + result.nome + "</td>");
-                $("#listagem tr:last-child").append("<td>" + result.profissao + "</td>");
-                $("#listagem tr:last-child").append("<td>" + result.estado + "</td>");
+                adicionarNaTabela(result);
             }
         });
     }
+}
+
+function adicionarNaTabela(result) {
+    $("#listagem").append("<tr class='text-center'></tr>");
+    $("#listagem tr:last-child").append("<td>" + result.nome + "</td>");
+    $("#listagem tr:last-child").append("<td>" + result.profissao + "</td>");
+    $("#listagem tr:last-child").append("<td>" + result.estado + "</td>");
 }
 
 function salvar() {
@@ -35,13 +61,21 @@ function salvar() {
     };
 
     $.ajax({
-        url: "http://localhost:5984/meu_bd/001",
+        url: "http://localhost:5984/meu_bd/" + id,
         type: "put",
         data: JSON.stringify(objeto),
         success: function (result) {
-            console.log(result);
+            limpar();
+            buscarPorId(result.id);
+            id++;
         }
     });
+
+}
+
+function limpar() {
+    $("#nome").val("");
+    $("#profissao").val("");
 }
 
 function apagar() {
