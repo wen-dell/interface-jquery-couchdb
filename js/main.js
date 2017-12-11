@@ -49,24 +49,42 @@ function adicionarNaTabela(resultado) {
     $("#listagem tr:last-child").append("<td>" + resultado.estado + "</td>");
 }
 
+function devolverObjeto() {
+
+}
+
+function isCamposValidos() {
+    let nome = $("#nome").val();
+    let profissao = $("#profissao").val();
+    let estado = $("#estado").val();
+
+    if (nome.length == 0 || profissao.length == 0 || estado.length == 0) {
+        alert("Preencha todos os campos!");
+    } else {
+        return objeto = {
+            nome: nome,
+            profissao: profissao,
+            estado: estado
+        };
+    }
+}
+
 function salvar() {
 
-    let objeto = {
-        nome: $("#nome").val(),
-        profissao: $("#profissao").val(),
-        estado: $("#estado").val()
-    };
+    let objeto = isCamposValidos();
 
-    $.ajax({
-        url: "http://localhost:5984/meu_bd/" + id,
-        type: "put",
-        data: JSON.stringify(objeto),
-        success: function (resultado) {
-            limpar();
-            buscarPorId(resultado.id);
-            id++;
-        }
-    });
+    if (objeto) {
+        $.ajax({
+            url: "http://localhost:5984/meu_bd/" + id,
+            type: "put",
+            data: JSON.stringify(objeto),
+            success: function (resultado) {
+                limpar();
+                buscarPorId(resultado.id);
+                id++;
+            }
+        });
+    }
 
 }
 
