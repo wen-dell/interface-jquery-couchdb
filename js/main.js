@@ -15,7 +15,9 @@ function buscarDados(array) {
             url: "http://localhost:5984/meu_bd/" + array[i].id,
             type: "get",
             success: function (result) {
-                console.log(result);
+                $("#listagem").append("<li>" + result.nome + "</li>");
+                $("#listagem").append("<li>" + result.profissao + "</li>");
+                $("#listagem").append("<li>" + result.estado + "</li>");
             }
         });
     }
@@ -38,7 +40,7 @@ function salvar() {
         type: "put",
         data: JSON.stringify(objeto),
         success: function (result) {
-            
+            console.log(result);
         }
     });
 }
