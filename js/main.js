@@ -1,12 +1,25 @@
-function buscarDadosCoucheDB() {
+function buscarIds() {
     $.ajax({
-        url: "http://localhost:5984/meu_bd/001",
-        type: "put",
-        data: JSON.stringify(objeto),
-        success: function (result) {
-            console.log(result);
+        url: "http://localhost:5984/meu_bd/_all_docs",
+        type: "get",
+        success: function(result) {
+            buscarDados(result.rows);
         }
     });
+}
+
+function buscarDados(array) {
+
+    for(let i = 0; i < array.length; i++) {
+        $.ajax({
+            url: "http://localhost:5984/meu_bd/" + array[i].id,
+            type: "get",
+            success: function (result) {
+                console.log(result);
+            }
+        });
+    }
+
 }
 
 function salvar() {
@@ -25,7 +38,7 @@ function salvar() {
         type: "put",
         data: JSON.stringify(objeto),
         success: function (result) {
-            console.log(result);
+            
         }
     });
 }
