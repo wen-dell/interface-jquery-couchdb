@@ -2,8 +2,8 @@ buscarIds();
 
 var id = 1;
 
-function atribuirId(result) {
-    id = result.rows[result.rows.length - 1].id;
+function atribuirId(resultado) {
+    id = resultado.rows[resultado.rows.length - 1].id;
     id++;
 }
 
@@ -11,8 +11,8 @@ function buscarPorId(id) {
     $.ajax({
         url: "http://localhost:5984/meu_bd/" + id,
         type: "get",
-        success: function(result) {
-            adicionarNaTabela(result);
+        success: function(resultado) {
+            adicionarNaTabela(resultado);
         }
     });
 }
@@ -35,38 +35,35 @@ function buscarDados(array) {
         $.ajax({
             url: "http://localhost:5984/meu_bd/" + array[i].id,
             type: "get",
-            success: function (result) {
-                adicionarNaTabela(result);
+            success: function (resultado) {
+                adicionarNaTabela(resultado);
             }
         });
     }
 }
 
-function adicionarNaTabela(result) {
+function adicionarNaTabela(resultado) {
     $("#listagem").append("<tr class='text-center'></tr>");
-    $("#listagem tr:last-child").append("<td>" + result.nome + "</td>");
-    $("#listagem tr:last-child").append("<td>" + result.profissao + "</td>");
-    $("#listagem tr:last-child").append("<td>" + result.estado + "</td>");
+    $("#listagem tr:last-child").append("<td>" + resultado.nome + "</td>");
+    $("#listagem tr:last-child").append("<td>" + resultado.profissao + "</td>");
+    $("#listagem tr:last-child").append("<td>" + resultado.estado + "</td>");
 }
 
 function salvar() {
-    let nome = $("#nome").val();
-    let profissao = $("#profissao").val();
-    let estado = $("#estado").val();
 
     let objeto = {
-        nome: nome,
-        profissao: profissao,
-        estado: estado
+        nome: $("#nome").val(),
+        profissao: $("#profissao").val(),
+        estado: $("#estado").val()
     };
 
     $.ajax({
         url: "http://localhost:5984/meu_bd/" + id,
         type: "put",
         data: JSON.stringify(objeto),
-        success: function (result) {
+        success: function (resultado) {
             limpar();
-            buscarPorId(result.id);
+            buscarPorId(resultado.id);
             id++;
         }
     });
@@ -76,38 +73,5 @@ function salvar() {
 function limpar() {
     $("#nome").val("");
     $("#profissao").val("");
-}
-
-function apagar() {
-
-    $.ajax({
-        url: "http://localhost:5984/meu_bd/001?rev=4-71aa911e2b3bbbe368de589d9f82f32c",
-        type: "delete",
-        success: function (result) {
-            console.log(result);
-        }
-    });
-}
-
-function atualizar() {
-
-    let nome = $("#nome").val();
-    let profissao = $("#profissao").val();
-    let estado = $("#estado").val();
-
-    let objeto = {
-        nome: nome,
-        profissao: profissao,
-        estado: estado,
-        _rev: "6-5a133f0846bdeb0e4c837409d5354bad"
-    };
-
-    $.ajax({
-        url: "http://localhost:5984/meu_bd/001/",
-        type: "put",
-        data: JSON.stringify(objeto),
-        success: function (result) {
-            console.log(result);
-        }
-    });
+    $("#estado").val("AC");
 }
