@@ -9,19 +9,18 @@ function buscarIds() {
 }
 
 function buscarDados(array) {
-
     for(let i = 0; i < array.length; i++) {
         $.ajax({
             url: "http://localhost:5984/meu_bd/" + array[i].id,
             type: "get",
             success: function (result) {
-                $("#listagem").append("<li>" + result.nome + "</li>");
-                $("#listagem").append("<li>" + result.profissao + "</li>");
-                $("#listagem").append("<li>" + result.estado + "</li>");
+                $("#listagem").append("<tr></tr>");
+                $("#listagem tr:last-child").append("<td>" + result.nome + "</td>");
+                $("#listagem tr:last-child").append("<td>" + result.profissao + "</td>");
+                $("#listagem tr:last-child").append("<td>" + result.estado + "</td>");
             }
         });
     }
-
 }
 
 function salvar() {
